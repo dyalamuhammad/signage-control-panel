@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { DeviceLiveBadge } from '@/components/device-live-badge';
 import { toast } from 'sonner';
 import { apiFetch } from '@/lib/fetcher';
 import type { Device } from '@/lib/types';
@@ -76,16 +76,7 @@ export default function DevicesPage() {
                     <h3 className="font-medium text-zinc-100">{d.nama}</h3>
                     <p className="text-xs text-zinc-500">{d.lokasi || '—'}</p>
                   </div>
-                  <Badge
-                    variant="outline"
-                    className={
-                      d.status === 'online'
-                        ? 'border-emerald-600 text-emerald-400'
-                        : 'border-zinc-600 text-zinc-400'
-                    }
-                  >
-                    {d.status}
-                  </Badge>
+                  <DeviceLiveBadge deviceId={d.id} initialStatus={d.status} />
                 </div>
                 <div className="flex gap-2 pt-2">
                   <Button

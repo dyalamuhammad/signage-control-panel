@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { apiFetch } from '@/lib/fetcher';
 import type { Device, Content } from '@/lib/types';
+import { subscribe } from '@/lib/ws-client';
 
 export default function OverviewPage() {
   const [devices, setDevices] = useState<Device[]>([]);
@@ -19,6 +20,18 @@ export default function OverviewPage() {
         setContents(c);
       })
       .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    return subscribe((msg) => {
+      if (msg.type === 'device:status') {
+        setDevices((prev) =>
+          prev.map((d) =>
+            d.id === msg.deviceId ? { ...d, status: msg.status } : d
+          )
+        );
+      }
+    });
   }, []);
 
   const online = devices.filter((d) => d.status === 'online').length;
