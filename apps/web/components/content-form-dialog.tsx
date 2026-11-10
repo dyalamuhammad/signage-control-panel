@@ -103,7 +103,10 @@ export function ContentFormDialog({ open, onOpenChange, onSuccess }: Props) {
 
           <div className="space-y-1.5">
             <Label>Tipe</Label>
-            <Select value={tipe} onValueChange={setTipe}>
+            <Select value={tipe} onValueChange={(value) => {
+                if (value === null) return;
+                setTipe(value);
+                }}>
               <SelectTrigger className="bg-zinc-800 border-zinc-700">
                 <SelectValue />
               </SelectTrigger>
