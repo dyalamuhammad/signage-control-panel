@@ -5,6 +5,7 @@ export type Device = {
   status: 'online' | 'offline';
   last_seen: string | null;
   created_at: string;
+    content_id: string | null;
 };
 
 export type Content = {

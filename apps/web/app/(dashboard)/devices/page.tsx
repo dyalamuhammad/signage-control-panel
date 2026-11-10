@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import { apiFetch } from '@/lib/fetcher';
 import type { Device } from '@/lib/types';
 import { DeviceFormDialog } from '@/components/device-form-dialog';
+import { AssignContentSelect } from '@/components/assign-content-select';
 
 export default function DevicesPage() {
   const [devices, setDevices] = useState<Device[]>([]);
@@ -78,6 +79,17 @@ export default function DevicesPage() {
                   </div>
                   <DeviceLiveBadge deviceId={d.id} initialStatus={d.status} />
                 </div>
+                <div className="space-y-1">
+                <p className="text-xs text-zinc-500">Content aktif</p>
+                <AssignContentSelect
+                    deviceId={d.id}
+                    currentContentId={d.content_id}
+                    onChanged={load}
+                />
+                </div>
+                <p className="text-[10px] text-zinc-600 font-mono truncate">
+                /device/{d.id}
+                </p>
                 <div className="flex gap-2 pt-2">
                   <Button
                     size="sm"

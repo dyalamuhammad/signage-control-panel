@@ -17,7 +17,11 @@ export async function GET(_req: Request, { params }: Params) {
 
 export async function PATCH(req: Request, { params }: Params) {
   const { id } = await params;
-  const body = await readJson<{ nama?: string; lokasi?: string }>(req);
+    const body = await readJson<{
+    nama?: string;
+    lokasi?: string;
+    content_id?: string | null;
+    }>(req);
   if (!body) return fail('body tidak valid');
 
   const patch: Record<string, unknown> = {};
@@ -28,6 +32,10 @@ export async function PATCH(req: Request, { params }: Params) {
   if (body.lokasi !== undefined) {
     patch.lokasi = body.lokasi?.trim() || null;
   }
+
+    if (body.content_id !== undefined) {
+        patch.content_id = body.content_id; // null untuk clear
+    }
 
   if (Object.keys(patch).length === 0) {
     return fail('tidak ada field yang diupdate');
