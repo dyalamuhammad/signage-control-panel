@@ -45,17 +45,12 @@ export default function DevicesPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
           <h1 className="text-2xl font-semibold">Devices</h1>
-          <p className="text-sm text-zinc-400">
-            Kelola device signage yang terhubung
-          </p>
+          <p className="text-sm text-zinc-400">Kelola device signage yang terhubung</p>
         </div>
-        <Button
-          onClick={() => setOpenForm(true)}
-          className=""
-        >
+        <Button onClick={() => setOpenForm(true)} className="">
           + Tambah Device
         </Button>
       </div>
@@ -87,9 +82,7 @@ export default function DevicesPage() {
           <CardContent className="py-16 text-center space-y-3">
             <div className="text-4xl">📺</div>
             <div>
-              <p className="text-[var(--foreground)] font-medium">
-                Belum ada device
-              </p>
+              <p className="text-[var(--foreground)] font-medium">Belum ada device</p>
               <p className="text-sm text-[var(--muted-foreground)]">
                 Tambahkan device pertama untuk mulai menampilkan content.
               </p>
@@ -102,60 +95,54 @@ export default function DevicesPage() {
           {devices.map((d) => (
             <Card key={d.id} className="">
               <CardContent className="px-4 space-y-3">
-  <div className="flex items-start justify-between gap-2">
-    <div className="min-w-0">
-      <h3 className="font-medium text-[var(--foreground)] truncate">
-        {d.nama}
-      </h3>
-      <p className="text-xs text-[var(--muted-foreground)] truncate">
-        {d.lokasi || '—'}
-      </p>
-    </div>
-    <DeviceLiveBadge deviceId={d.id} initialStatus={d.status} />
-  </div>
+                <div className="flex items-start justify-between gap-2">
+                  <div className="min-w-0">
+                    <h3 className="font-medium text-[var(--foreground)] truncate">{d.nama}</h3>
+                    <p className="text-xs text-[var(--muted-foreground)] truncate">
+                      {d.lokasi || '—'}
+                    </p>
+                  </div>
+                  <DeviceLiveBadge deviceId={d.id} initialStatus={d.status} />
+                </div>
 
-  <div className="space-y-1">
-    <p className="text-xs text-[var(--muted-foreground)]">Content aktif</p>
-    <AssignContentSelect
-      deviceId={d.id}
-      currentContentId={d.content_id}
-      onChanged={load}
-    />
-  </div>
+                <div className="space-y-1">
+                  <p className="text-xs text-[var(--muted-foreground)]">Content aktif</p>
+                  <AssignContentSelect
+                    deviceId={d.id}
+                    currentContentId={d.content_id}
+                    onChanged={load}
+                  />
+                </div>
 
-  <p className="text-[10px] text-[var(--muted-foreground)]/60 font-mono truncate">
-    /device/{d.id}
-  </p>
+                <p className="text-[10px] text-[var(--muted-foreground)]/60 font-mono truncate">
+                  /device/{d.id}
+                </p>
 
-  <div className="flex gap-2 pt-1">
-    <Button
-      size="sm"
-      variant="outline"
-      onClick={() => window.open(`/device/${d.id}`, '_blank')}
-      className="flex-1"
-    >
-      Buka Client
-    </Button>
-    <Button
-      size="sm"
-      variant="destructive"
-      onClick={() => handleDelete(d.id)}
-      className="flex-1"
-    >
-      Hapus
-    </Button>
-  </div>
-</CardContent>
+                <div className="flex gap-2 pt-1">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => window.open(`/device/${d.id}`, '_blank')}
+                    className="flex-1"
+                  >
+                    Buka Client
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="destructive"
+                    onClick={() => handleDelete(d.id)}
+                    className="flex-1"
+                  >
+                    Hapus
+                  </Button>
+                </div>
+              </CardContent>
             </Card>
           ))}
         </div>
       )}
 
-      <DeviceFormDialog
-        open={openForm}
-        onOpenChange={setOpenForm}
-        onSuccess={load}
-      />
+      <DeviceFormDialog open={openForm} onOpenChange={setOpenForm} onSuccess={load} />
     </div>
   );
 }

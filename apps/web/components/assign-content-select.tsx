@@ -18,11 +18,7 @@ type Props = {
   onChanged: () => void;
 };
 
-export function AssignContentSelect({
-  deviceId,
-  currentContentId,
-  onChanged,
-}: Props) {
+export function AssignContentSelect({ deviceId, currentContentId, onChanged }: Props) {
   const [contents, setContents] = useState<Content[]>([]);
   const [value, setValue] = useState(currentContentId ?? 'none');
   const [loading, setLoading] = useState(false);
@@ -59,7 +55,8 @@ export function AssignContentSelect({
       <SelectTrigger className="bg-zinc-800 border-zinc-700 text-zinc-100 text-xs h-9">
         <SelectValue placeholder="Pilih content" />
       </SelectTrigger>
-<SelectContent className="bg-[var(--card)] border border-[var(--border)] text-[var(--card-foreground)]">        <SelectItem value="none">— Kosongkan —</SelectItem>
+      <SelectContent className="bg-[var(--card)] border border-[var(--border)] text-[var(--card-foreground)]">
+        <SelectItem value="none">— Kosongkan —</SelectItem>
         {contents.map((c) => (
           <SelectItem key={c.id} value={c.id}>
             {c.judul} ({c.tipe})

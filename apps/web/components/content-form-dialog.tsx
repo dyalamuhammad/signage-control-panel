@@ -1,12 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -68,16 +63,16 @@ export function ContentFormDialog({ open, onOpenChange, onSuccess }: Props) {
     }
   }
 
- async function submit(e: React.FormEvent) {
-  e.preventDefault();
-  if (!judul.trim()) return toast.error('Judul wajib diisi');
-  if (!payload.trim()) return toast.error('Payload wajib diisi');
+  async function submit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!judul.trim()) return toast.error('Judul wajib diisi');
+    if (!payload.trim()) return toast.error('Payload wajib diisi');
 
-  if ((tipe === 'url' || tipe === 'image' || tipe === 'video') && !isValidUrl(payload)) {
-    return toast.error('URL harus diawali http:// atau https://');
-  }
+    if ((tipe === 'url' || tipe === 'image' || tipe === 'video') && !isValidUrl(payload)) {
+      return toast.error('URL harus diawali http:// atau https://');
+    }
 
-  try {
+    try {
       setLoading(true);
       await apiFetch('/api/contents', {
         method: 'POST',
@@ -117,14 +112,18 @@ export function ContentFormDialog({ open, onOpenChange, onSuccess }: Props) {
 
           <div className="space-y-1.5">
             <Label>Tipe</Label>
-            <Select value={tipe} onValueChange={(value) => {
+            <Select
+              value={tipe}
+              onValueChange={(value) => {
                 if (value === null) return;
                 setTipe(value);
-                }}>
+              }}
+            >
               <SelectTrigger className="w-full">
                 <SelectValue />
               </SelectTrigger>
-<SelectContent className="bg-[var(--card)] border border-[var(--border)] text-[var(--card-foreground)]">                {TIPE.map((t) => (
+              <SelectContent className="bg-[var(--card)] border border-[var(--border)] text-[var(--card-foreground)]">
+                {TIPE.map((t) => (
                   <SelectItem key={t.value} value={t.value}>
                     {t.label}
                   </SelectItem>
@@ -143,19 +142,13 @@ export function ContentFormDialog({ open, onOpenChange, onSuccess }: Props) {
                 disabled={uploading}
                 className="border-zinc-700"
               />
-              {uploading && (
-                <p className="text-xs text-zinc-500">Mengupload...</p>
-              )}
+              {uploading && <p className="text-xs text-zinc-500">Mengupload...</p>}
             </div>
           )}
 
           <div className="space-y-1.5">
             <Label>
-              {tipe === 'text'
-                ? 'Isi Teks'
-                : tipe === 'url'
-                  ? 'URL Website'
-                  : 'URL File'}
+              {tipe === 'text' ? 'Isi Teks' : tipe === 'url' ? 'URL Website' : 'URL File'}
             </Label>
             {tipe === 'text' ? (
               <textarea
@@ -166,24 +159,20 @@ export function ContentFormDialog({ open, onOpenChange, onSuccess }: Props) {
                 placeholder="Selamat datang di gedung kami"
               />
             ) : (
-             <>
-  <Input
-    value={payload}
-    onChange={(e) => setPayload(e.target.value)}
-    placeholder="https://..."
-  />
-  <p className="text-xs text-[var(--muted-foreground)]">
-    Harus diawali <code>https://</code> — contoh: https://example.com
-  </p>
-</>
+              <>
+                <Input
+                  value={payload}
+                  onChange={(e) => setPayload(e.target.value)}
+                  placeholder="https://..."
+                />
+                <p className="text-xs text-[var(--muted-foreground)]">
+                  Harus diawali <code>https://</code> — contoh: https://example.com
+                </p>
+              </>
             )}
           </div>
 
-          <Button
-            type="submit"
-            disabled={loading || uploading}
-            className="w-full "
-          >
+          <Button type="submit" disabled={loading || uploading} className="w-full ">
             {loading ? 'Menyimpan...' : 'Simpan'}
           </Button>
         </form>
