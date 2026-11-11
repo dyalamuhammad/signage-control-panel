@@ -47,11 +47,18 @@ export function ContentFormDialog({ open, onOpenChange, onSuccess }: Props) {
   async function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
+    if (file.size > 4.5 * 1024 * 1024) {
+      e.target.value = '';
+      return toast.error('File maksimal 4.5MB. Kompres video/gambar dulu ya.');
+    }
     try {
       setUploading(true);
       const form = new FormData();
       form.append('file', file);
       const res = await fetch('/api/upload', { method: 'POST', body: form });
+      if (res.status === 413) {
+        throw new Error('File terlalu besar. Maksimal 4.5MB.');
+      }
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Upload gagal');
       setPayload(data.url);

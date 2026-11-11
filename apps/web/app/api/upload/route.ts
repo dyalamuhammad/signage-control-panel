@@ -2,7 +2,7 @@ import { supabaseServer } from '@/lib/supabase';
 import { ok, fail } from '@/lib/api-helpers';
 
 const BUCKET = 'contents';
-const MAX_SIZE = 10 * 1024 * 1024; // 10 MB
+const MAX_SIZE = 4.5 * 1024 * 1024; // 4.5 MB (limit Vercel body)
 const ALLOWED = ['image/png', 'image/jpeg', 'image/webp', 'image/gif', 'video/mp4', 'video/webm'];
 
 export async function POST(req: Request) {
@@ -21,13 +21,11 @@ export async function POST(req: Request) {
   const path = `uploads/${safeName}`;
 
   const arrayBuffer = await file.arrayBuffer();
-  const { error: upErr } = await supabaseServer.storage
-    .from(BUCKET)
-    .upload(path, arrayBuffer, {
-      contentType: file.type,
-      cacheControl: '3600',
-      upsert: false,
-    });
+  const { error: upErr } = await supabaseServer.storage.from(BUCKET).upload(path, arrayBuffer, {
+    contentType: file.type,
+    cacheControl: '3600',
+    upsert: false,
+  });
 
   if (upErr) return fail(upErr.message, 500);
 
