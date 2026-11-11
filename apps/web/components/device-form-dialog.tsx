@@ -73,7 +73,7 @@ export function DeviceFormDialog({ open, onOpenChange, onSuccess }: Props) {
           <Button
             type="submit"
             disabled={loading}
-            className="w-full bg-emerald-600 hover:bg-emerald-500 text-white"
+            className="w-full "
           >
             {loading ? 'Menyimpan...' : 'Simpan'}
           </Button>

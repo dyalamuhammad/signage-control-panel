@@ -53,7 +53,7 @@ export default function DevicesPage() {
         </div>
         <Button
           onClick={() => setOpenForm(true)}
-          className="bg-emerald-600 hover:bg-emerald-500 text-white"
+          className=""
         >
           + Tambah Device
         </Button>

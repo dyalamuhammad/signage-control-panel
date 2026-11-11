@@ -165,7 +165,7 @@ export function ContentFormDialog({ open, onOpenChange, onSuccess }: Props) {
           <Button
             type="submit"
             disabled={loading || uploading}
-            className="w-full bg-emerald-600 hover:bg-emerald-500 text-white"
+            className="w-full "
           >
             {loading ? 'Menyimpan...' : 'Simpan'}
           </Button>

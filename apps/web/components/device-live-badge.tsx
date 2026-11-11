@@ -18,20 +18,13 @@ export function DeviceLiveBadge({ deviceId, initialStatus }: Props) {
   }, [deviceId]);
 
   return (
-    <Badge
-      variant="outline"
-      className={
-        status === 'online'
-          ? 'border-emerald-600 text-emerald-400'
-          : 'border-zinc-600 text-zinc-400'
-      }
-    >
-      <span
-        className={`inline-block w-1.5 h-1.5 rounded-full mr-1.5 ${
-          status === 'online' ? 'bg-emerald-400 animate-pulse' : 'bg-zinc-500'
-        }`}
-      />
-      {status}
-    </Badge>
-  );
+  <Badge variant={status === 'online' ? 'success' : 'outline'}>
+    <span
+      className={`inline-block w-1.5 h-1.5 rounded-full ${
+        status === 'online' ? 'bg-emerald-400 animate-pulse' : 'bg-zinc-500'
+      }`}
+    />
+    {status}
+  </Badge>
+);
 }

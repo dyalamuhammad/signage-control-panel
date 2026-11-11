@@ -33,30 +33,45 @@ export default function LoginPage() {
     router.refresh();
   }
 
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-zinc-950 px-4">
-      <Card className="w-full max-w-sm bg-zinc-900 border-zinc-800">
-        <CardHeader>
-          <CardTitle className="text-zinc-100">Signage Admin</CardTitle>
-          <p className="text-sm text-zinc-400">Login untuk mengelola device & content</p>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={onSubmit} className="space-y-4">
-            <div className="space-y-1.5">
-              <Label htmlFor="u" className="text-zinc-300">Username</Label>
-              <Input id="u" value={username} onChange={(e) => setUsername(e.target.value)} className="bg-zinc-800 border-zinc-700 text-zinc-100" autoComplete="username" />
-            </div>
-            <div className="space-y-1.5">
-              <Label htmlFor="p" className="text-zinc-300">Password</Label>
-              <Input id="p" type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="bg-zinc-800 border-zinc-700 text-zinc-100" autoComplete="current-password" />
-            </div>
-            {err && <p className="text-sm text-rose-400">{err}</p>}
-            <Button type="submit" disabled={loading} className="w-full bg-emerald-600 hover:bg-emerald-500 text-white">
-              {loading ? 'Loading...' : 'Login'}
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
-    </div>
-  );
+return (
+  <div className="min-h-screen flex items-center justify-center bg-[var(--background)] px-4">
+    <Card className="w-full max-w-sm">
+      <CardHeader className="space-y-1 px-4">
+        <CardTitle className="text-xl tracking-tight">Signage Admin</CardTitle>
+        <p className="text-sm text-[var(--muted-foreground)]">
+          Login untuk mengelola device & content
+        </p>
+      </CardHeader>
+      <CardContent className='px-4'>
+        <form onSubmit={onSubmit} className="space-y-4">
+          <div className="space-y-1.5">
+            <Label htmlFor="u">Username</Label>
+            <Input
+              id="u"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              autoComplete="username"
+            />
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="p">Password</Label>
+            <Input
+              id="p"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
+            />
+          </div>
+          {err && (
+            <p className="text-sm text-[var(--destructive)]">{err}</p>
+          )}
+          <Button type="submit" disabled={loading} className="w-full">
+            {loading ? 'Loading...' : 'Login'}
+          </Button>
+        </form>
+      </CardContent>
+    </Card>
+  </div>
+);
 }
