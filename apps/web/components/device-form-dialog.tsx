@@ -47,7 +47,7 @@ export function DeviceFormDialog({ open, onOpenChange, onSuccess }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-zinc-900 border-zinc-800 text-zinc-100">
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>Tambah Device</DialogTitle>
         </DialogHeader>
@@ -57,7 +57,7 @@ export function DeviceFormDialog({ open, onOpenChange, onSuccess }: Props) {
             <Input
               value={nama}
               onChange={(e) => setNama(e.target.value)}
-              className="bg-zinc-800 border-zinc-700"
+              className=""
               placeholder="TV Lobby"
             />
           </div>

@@ -20,6 +20,15 @@ import {
 import { toast } from 'sonner';
 import { apiFetch } from '@/lib/fetcher';
 
+function isValidUrl(v: string) {
+  try {
+    const u = new URL(v);
+    return u.protocol === 'http:' || u.protocol === 'https:';
+  } catch {
+    return false;
+  }
+}
+
 type Props = {
   open: boolean;
   onOpenChange: (v: boolean) => void;
@@ -59,11 +68,16 @@ export function ContentFormDialog({ open, onOpenChange, onSuccess }: Props) {
     }
   }
 
-  async function submit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!judul.trim()) return toast.error('Judul wajib diisi');
-    if (!payload.trim()) return toast.error('Payload wajib diisi');
-    try {
+ async function submit(e: React.FormEvent) {
+  e.preventDefault();
+  if (!judul.trim()) return toast.error('Judul wajib diisi');
+  if (!payload.trim()) return toast.error('Payload wajib diisi');
+
+  if ((tipe === 'url' || tipe === 'image' || tipe === 'video') && !isValidUrl(payload)) {
+    return toast.error('URL harus diawali http:// atau https://');
+  }
+
+  try {
       setLoading(true);
       await apiFetch('/api/contents', {
         method: 'POST',
@@ -86,7 +100,7 @@ export function ContentFormDialog({ open, onOpenChange, onSuccess }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-zinc-900 border-zinc-800 text-zinc-100">
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>Tambah Content</DialogTitle>
         </DialogHeader>
@@ -96,7 +110,7 @@ export function ContentFormDialog({ open, onOpenChange, onSuccess }: Props) {
             <Input
               value={judul}
               onChange={(e) => setJudul(e.target.value)}
-              className="bg-zinc-800 border-zinc-700"
+              className="border-zinc-700"
               placeholder="Welcome Screen"
             />
           </div>
@@ -107,11 +121,10 @@ export function ContentFormDialog({ open, onOpenChange, onSuccess }: Props) {
                 if (value === null) return;
                 setTipe(value);
                 }}>
-              <SelectTrigger className="bg-zinc-800 border-zinc-700">
+              <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent className="bg-zinc-900 border-zinc-800 text-zinc-100">
-                {TIPE.map((t) => (
+<SelectContent className="bg-[var(--card)] border border-[var(--border)] text-[var(--card-foreground)]">                {TIPE.map((t) => (
                   <SelectItem key={t.value} value={t.value}>
                     {t.label}
                   </SelectItem>
@@ -128,7 +141,7 @@ export function ContentFormDialog({ open, onOpenChange, onSuccess }: Props) {
                 accept={tipe === 'image' ? 'image/*' : 'video/*'}
                 onChange={handleFile}
                 disabled={uploading}
-                className="bg-zinc-800 border-zinc-700"
+                className="border-zinc-700"
               />
               {uploading && (
                 <p className="text-xs text-zinc-500">Mengupload...</p>
@@ -149,16 +162,20 @@ export function ContentFormDialog({ open, onOpenChange, onSuccess }: Props) {
                 value={payload}
                 onChange={(e) => setPayload(e.target.value)}
                 rows={4}
-                className="w-full rounded-md bg-zinc-800 border border-zinc-700 px-3 py-2 text-sm text-zinc-100"
+                className="w-full rounded-md border border-zinc-700 px-3 py-2 text-sm text-zinc-100"
                 placeholder="Selamat datang di gedung kami"
               />
             ) : (
-              <Input
-                value={payload}
-                onChange={(e) => setPayload(e.target.value)}
-                className="bg-zinc-800 border-zinc-700"
-                placeholder="https://..."
-              />
+             <>
+  <Input
+    value={payload}
+    onChange={(e) => setPayload(e.target.value)}
+    placeholder="https://..."
+  />
+  <p className="text-xs text-[var(--muted-foreground)]">
+    Harus diawali <code>https://</code> — contoh: https://example.com
+  </p>
+</>
             )}
           </div>
 

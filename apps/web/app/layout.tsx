@@ -24,7 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="id">
       <body className={`${inter.variable} ${mono.variable} antialiased`}>
           {children}
-        <Toaster position="top-right" theme="dark" />
+          <Toaster position="top-right" theme="dark" richColors closeButton />
       </body>
     </html>
   );

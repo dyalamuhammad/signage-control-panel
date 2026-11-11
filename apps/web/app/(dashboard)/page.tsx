@@ -5,10 +5,12 @@ import { Card, CardContent } from '@/components/ui/card';
 import { apiFetch } from '@/lib/fetcher';
 import type { Device, Content } from '@/lib/types';
 import { subscribe } from '@/lib/ws-client';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function OverviewPage() {
   const [devices, setDevices] = useState<Device[]>([]);
   const [contents, setContents] = useState<Content[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     Promise.all([
@@ -19,7 +21,8 @@ export default function OverviewPage() {
         setDevices(d);
         setContents(c);
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => setLoading(false));
   }, []);
 
   useEffect(() => {
@@ -45,33 +48,48 @@ export default function OverviewPage() {
   ];
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold">Overview</h1>
-        <p className="text-sm text-zinc-400">
-          Ringkasan status signage Anda
-        </p>
-      </div>
-
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {stats.map((s) => (
-          <Card key={s.label} className="bg-zinc-900 border-zinc-800">
-            <CardContent className="p-4">
-              <p className="text-xs text-zinc-500">{s.label}</p>
-              <p className={`text-3xl font-semibold ${s.color}`}>{s.value}</p>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-
-      <Card className="bg-zinc-900 border-zinc-800">
-        <CardContent className="p-4">
-          <p className="text-sm text-zinc-400">
-            💡 Status online/offline saat ini masih <b>statis</b>. Update
-            real-time via WebSocket akan ditambahkan di Hari 3.
-          </p>
-        </CardContent>
-      </Card>
+  <div className="space-y-6">
+    <div>
+      <h1 className="text-2xl font-semibold tracking-tight">Overview</h1>
+      <p className="text-sm text-[var(--muted-foreground)]">
+        Ringkasan status signage Anda
+      </p>
     </div>
-  );
+
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      {loading
+        ? [1, 2, 3, 4].map((i) => (
+            <div
+              key={i}
+              className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-4 space-y-2"
+            >
+              <Skeleton className="h-3 w-20" />
+              <Skeleton className="h-8 w-12" />
+            </div>
+          ))
+        : stats.map((s) => (
+            <Card key={s.label}>
+              <CardContent className="p-4">
+                <p className="text-xs text-[var(--muted-foreground)]">
+                  {s.label}
+                </p>
+                <p className={`text-3xl font-semibold tracking-tight ${s.color}`}>
+                  {s.value}
+                </p>
+              </CardContent>
+            </Card>
+          ))}
+    </div>
+
+    <Card>
+      <CardContent className="p-4 flex items-start gap-3">
+        <span className="text-lg leading-none">💡</span>
+        <p className="text-sm text-[var(--muted-foreground)]">
+          Status online/offline diperbarui <b>real-time</b> via WebSocket.
+          Ganti content device untuk melihat update langsung di device client.
+        </p>
+      </CardContent>
+    </Card>
+  </div>
+);
 }
