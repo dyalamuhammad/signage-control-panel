@@ -1,12 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -66,15 +61,10 @@ export function DeviceFormDialog({ open, onOpenChange, onSuccess }: Props) {
             <Input
               value={lokasi}
               onChange={(e) => setLokasi(e.target.value)}
-              className="bg-zinc-800 border-zinc-700"
               placeholder="Gedung A - Lantai 1"
             />
           </div>
-          <Button
-            type="submit"
-            disabled={loading}
-            className="w-full "
-          >
+          <Button type="submit" disabled={loading} className="w-full ">
             {loading ? 'Menyimpan...' : 'Simpan'}
           </Button>
         </form>

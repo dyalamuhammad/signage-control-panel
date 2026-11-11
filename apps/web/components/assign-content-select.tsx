@@ -52,7 +52,7 @@ export function AssignContentSelect({ deviceId, currentContentId, onChanged }: P
 
   return (
     <Select value={value} onValueChange={handleChange} disabled={loading}>
-      <SelectTrigger className="bg-zinc-800 border-zinc-700 text-zinc-100 text-xs h-9">
+      <SelectTrigger className="w-full text-xs h-9">
         <SelectValue placeholder="Pilih content" />
       </SelectTrigger>
       <SelectContent className="bg-[var(--card)] border border-[var(--border)] text-[var(--card-foreground)]">
