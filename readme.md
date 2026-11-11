@@ -36,6 +36,8 @@ Aplikasi signage digital dengan dashboard admin dan device client real-time.
 4. Saat status berubah → broadcast `device:status` ke semua admin
 5. Dashboard update badge **tanpa refresh**
 6. Device disconnect → langsung broadcast offline (grace via heartbeat tetap aktif)
+7. Saat admin ganti content device → web panggil `POST /push` ke WS server
+8. WS server kirim `command:push` ke socket device → device update content langsung
 
 ## Fitur
 
@@ -46,6 +48,7 @@ Aplikasi signage digital dengan dashboard admin dan device client real-time.
 - ✅ Device client fullscreen (text/image/video/url)
 - ✅ Reconnection dengan exponential backoff (max 30s)
 - ✅ Auth JWT untuk dashboard admin
+- ✅ Command push content real-time (bonus) — admin ganti content → device update tanpa refresh
 
 ## Setup Lokal
 
@@ -103,3 +106,21 @@ create table contents (
   payload text not null,
   created_at timestamptz default now()
 );
+
+```
+
+## Bonus — Command Push
+
+Admin mengganti content di `/devices` → device client yang sedang online
+langsung menampilkan content baru **tanpa refresh**.
+
+Alur:
+Admin PATCH /api/devices/:id
+→ web panggil POST /push (dengan x-push-secret)
+→ WS server cari device di Map
+→ kirim { type: 'command:push', payload: content }
+→ device client setContent(payload)
+
+Env tambahan:
+- `apps/web`: `WS_PUSH_URL`, `WS_PUSH_SECRET`
+- `apps/ws-server`: `PUSH_SECRET` (harus sama dengan `WS_PUSH_SECRET`)
