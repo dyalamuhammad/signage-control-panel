@@ -121,7 +121,7 @@ export function ContentFormDialog({ open, onOpenChange, onSuccess }: Props) {
                 if (value === null) return;
                 setTipe(value);
                 }}>
-              <SelectTrigger>
+              <SelectTrigger className="w-full">
                 <SelectValue />
               </SelectTrigger>
 <SelectContent className="bg-[var(--card)] border border-[var(--border)] text-[var(--card-foreground)]">                {TIPE.map((t) => (
