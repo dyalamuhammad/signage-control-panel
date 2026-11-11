@@ -29,8 +29,8 @@ export default function LoginPage() {
       return;
     }
     // di dalam onSubmit, setelah res.ok
+    await new Promise((r) => setTimeout(r, 150));
     window.location.href = '/';
-    router.refresh();
   }
 
 return (
