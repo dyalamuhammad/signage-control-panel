@@ -8,6 +8,28 @@ Aplikasi signage digital dengan dashboard admin dan device client real-time.
 - Login: `admin` / `admin123`
 - Device client: `https://signage-control-panel-fawn.vercel.app/device/<device-id>`
 
+## Screenshots
+
+### Desktop
+
+| Overview | Devices |
+|---|---|
+| ![Overview](docs/screenshots/desktop-overview.png) | ![Devices](docs/screenshots/desktop-devices.png) |
+
+| Contents | Device Client |
+|---|---|
+| ![Contents](docs/screenshots/desktop-contents.png) | ![Device Client](docs/screenshots/desktop-device-client.png) |
+
+### Mobile (Responsive)
+
+| Overview | Devices | Sidebar Menu |
+|---|---|---|
+| ![Mobile Overview](docs/screenshots/mobile-overview.png) | ![Mobile Devices](docs/screenshots/mobile-devices.png) | ![Mobile Menu](docs/screenshots/mobile-menu.png) |
+
+> Dashboard fully responsive — sidebar berubah menjadi hamburger drawer di mobile.
+
+---
+
 ## Tech Stack
 
 | Layer | Teknologi |
@@ -49,6 +71,7 @@ Aplikasi signage digital dengan dashboard admin dan device client real-time.
 - ✅ Reconnection dengan exponential backoff (max 30s)
 - ✅ Auth JWT untuk dashboard admin
 - ✅ Command push content real-time (bonus) — admin ganti content → device update tanpa refresh
+- ✅ Fully responsive (desktop + mobile, sidebar → hamburger drawer)
 
 ## Setup Lokal
 
