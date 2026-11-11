@@ -53,7 +53,7 @@ export default function DeviceClient() {
     const unsubStatus = sock.onStatus(setConnStatus);
     const unsubMsg = sock.onMessage((msg) => {
       if (msg.type === 'command:push' && msg.payload) {
-        // bonus nanti
+        setContent(msg.payload ?? null);
       }
     });
 

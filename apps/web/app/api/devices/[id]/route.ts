@@ -1,5 +1,6 @@
 import { supabaseServer } from '@/lib/supabase';
 import { ok, fail, readJson } from '@/lib/api-helpers';
+import { pushContentToDevice } from '@/lib/push';
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -49,6 +50,19 @@ export async function PATCH(req: Request, { params }: Params) {
     .single();
 
   if (error) return fail(error.message, 500);
+  // kalau content_id berubah → push ke device via WS
+  if (body.content_id !== undefined) {
+    if (body.content_id) {
+      const { data: c } = await supabaseServer
+        .from('contents')
+        .select('*')
+        .eq('id', body.content_id)
+        .single();
+      if (c) await pushContentToDevice(id, c);
+    } else {
+      await pushContentToDevice(id, null);
+    }
+  }
   return ok(data);
 }
 

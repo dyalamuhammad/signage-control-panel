@@ -13,6 +13,41 @@ const server = http.createServer((req, res) => {
     res.end(JSON.stringify({ ok: true, ts: Date.now() }));
     return;
   }
+  if (req.url === '/push' && req.method === 'POST') {
+      console.log('[PUSH] incoming', req.headers['x-push-secret'] ? 'has-secret' : 'no-secret');
+
+    let body = '';
+    req.on('data', (chunk) => (body += chunk));
+    req.on('end', () => {
+      try {
+        if (req.headers['x-push-secret'] !== process.env.PUSH_SECRET) {
+            console.log('[PUSH] secret mismatch');
+
+          res.writeHead(401, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'unauthorized' }));
+          return;
+        }
+        console.log('[PUSH] secret ok');
+
+        const { deviceId, contentId, payload } = JSON.parse(body);
+        const d = devices.get(deviceId);
+        console.log('[PUSH] device found?', !!d, 'readyState', d?.ws.readyState);
+
+        if (!d || d.ws.readyState !== 1) {
+          res.writeHead(404, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'device offline' }));
+          return;
+        }
+        d.ws.send(JSON.stringify({ type: 'command:push', contentId, payload }));
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: true }));
+      } catch {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'invalid body' }));
+      }
+    });
+    return;
+  }
   res.writeHead(404);
   res.end('Not found');
 });
